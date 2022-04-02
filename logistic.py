@@ -4,7 +4,7 @@ from load_data import *
 
 def logistic_regress(X_tr, y_tr, X_test, y_test):
     # fitting the model
-    classifier = LogisticRegression(max_iter=10000)
+    classifier = LogisticRegression(max_iter=10000, multi_class='multinomial')  # forcing the fit not be one vs all
     classifier.fit(X_tr, y_tr)
 
     # finding the accuracy

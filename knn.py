@@ -24,7 +24,7 @@ def run_knn():
     i = 0
     for n in ns:
         sc = knn(int(n), X_tr, y_tr, X_test, y_test)
-        print(f"Score for n={n} is {sc}")
+        print(f"Score for n={int(n)} is {sc}")
         scs[i] = sc
         i += 1
 
