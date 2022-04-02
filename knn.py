@@ -1,5 +1,6 @@
 from sklearn.neighbors import KNeighborsClassifier
 from load_data import *
+from scores import *
 
 
 def knn(n, X_tr, y_tr, X_test, y_test):
@@ -8,8 +9,8 @@ def knn(n, X_tr, y_tr, X_test, y_test):
     knn_classifier.fit(X_tr, y_tr)
 
     # finding the accuracy
-    sc = knn_classifier.score(X_test, y_test)
-    return sc
+    y_pred = knn_classifier.predict(X_test)
+    return get_accuracy(y_pred, y_test), get_accuracy_order(y_pred, y_test), get_accuracy_one(y_pred, y_test)
 
 
 def run_knn():
@@ -19,16 +20,9 @@ def run_knn():
     X_tr, y_tr = read_training_data_linear()
     X_test, y_test = read_test_data_linear()
 
-    scs = np.zeros(len(ns))
-
-    i = 0
-    for n in ns:
-        sc = knn(int(n), X_tr, y_tr, X_test, y_test)
-        print(f"Score for n={int(n)} is {sc}")
-        scs[i] = sc
-        i += 1
-
     file = open("../results/knn.txt", 'w')
-    for i in range(len(ns)):
-        file.write(str(int(ns[i])) + ", " + str(scs[i]) + "\n")
+    for n in ns:
+        sc, sc_ord, sc_one = knn(int(n), X_tr, y_tr, X_test, y_test)
+        print(f"Scores for n={int(n)} are {sc}, {sc_ord}, {sc_one}")
+        file.write(str(int(n)) + ", " + str(sc) + ", " + str(sc_ord) + ", " + str(sc_one) + "\n")
     file.close()
