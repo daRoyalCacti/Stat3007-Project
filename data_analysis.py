@@ -66,3 +66,14 @@ def get_unique_numbers():
     for u in unique_y:
         file.write(str(u) + "\n")
     file.close()
+
+
+def get_unique_numbers_train():
+    with open("../dataset/training_labels.txt", 'r') as g:
+        y = list(map(int, g.readlines()))
+
+    unique_y = np.unique(np.array(y))
+    file = open("../results/unique_digits_train.txt", 'w')
+    for u in unique_y:
+        file.write(str(u) + "\n")
+    file.close()

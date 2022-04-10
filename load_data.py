@@ -2,10 +2,15 @@ import numpy as np
 from matplotlib import image
 
 
-def read_data_linear(img_loc, label):
-    # reading the identifiers
+def read_identifies(label):
     with open(label, 'r') as g:
         y = list(map(int, g.readlines()))
+    return y
+
+
+def read_data_linear(img_loc, label):
+    # reading the identifiers
+    y = read_identifies(label)
 
     # reading the image data and flattening to a 1D array
     first_image = image.imread(img_loc + "00001.png")
@@ -22,6 +27,7 @@ def read_data_linear(img_loc, label):
     return X, y
 
 
+# functions for reading the coloured images in as vectors
 def read_test_data_linear():
     return read_data_linear("../dataset/test_images/", "../dataset/test_labels.txt")
 
@@ -32,3 +38,16 @@ def read_training_data_linear():
 
 def read_extra_data_linear():
     return read_data_linear("../dataset/extra_images/", "../dataset/extra_labels.txt")
+
+
+# functions for reading the grayscale images in as vectors
+def read_test_data_linear_bw():
+    return read_data_linear("../dataset/test_images_grayscale/", "../dataset/test_labels.txt")
+
+
+def read_training_data_linear_bw():
+    return read_data_linear("../dataset/training_images_grayscale/", "../dataset/training_labels.txt")
+
+
+def read_extra_data_linear_bw():
+    return read_data_linear("../dataset/extra_images_grayscale/", "../dataset/extra_labels.txt")

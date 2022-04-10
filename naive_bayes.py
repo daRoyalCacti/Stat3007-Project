@@ -1,5 +1,5 @@
 from sklearn.naive_bayes import MultinomialNB
-from load_data import *
+from compute_output import *
 from scores import *
 
 
@@ -13,16 +13,13 @@ def nb_regress(X_tr, y_tr, X_test, y_test):
     return get_accuracy(y_pred, y_test), get_accuracy_order(y_pred, y_test), get_accuracy_one(y_pred, y_test)
 
 
-def run_nb():
-    # loading the data
-    X_tr, y_tr = read_training_data_linear()
-    X_test, y_test = read_test_data_linear()
-
+def run_nb_once(X_tr, y_tr, X_test, y_test, output_file, preamble):
     sc, sc_ord, sc_one = nb_regress(X_tr, y_tr, X_test, y_test)
-    print(f"Scores are {sc}, {sc_ord}, {sc_one}")
-
-    file = open("../results/nb.txt", 'w')
-    file.write(str(sc) + "\n")
-    file.write(str(sc_ord) + "\n")
-    file.write(str(sc_one) + "\n")
+    file = open(output_file, 'a')
+    file.write("\n" + preamble + "\n")
+    file.write(str(sc) + " & " + str(sc_ord) + " & " + str(sc_one) + "\n")
     file.close()
+
+
+def run_nb():
+    compute_output(run_nb_once, "../results/nb.txt")

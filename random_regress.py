@@ -17,8 +17,8 @@ def run_random_regress():
     # loading the data
     X_test, y_test = read_test_data_linear()
 
-    # load the possible digits
-    with open("../results/unique_digits.txt", 'r') as g:
+    # load the possible digits only in the training set
+    with open("../results/unique_digits_train.txt", 'r') as g:
         digits = list(map(int, g.readlines()))
 
     sc, sc_ord, sc_one = random_regress(y_test, digits)
@@ -28,4 +28,17 @@ def run_random_regress():
     file.write(str(sc) + "\n")
     file.write(str(sc_ord) + "\n")
     file.write(str(sc_one) + "\n")
+
+    # load all the possible digits
+    with open("../results/unique_digits.txt", 'r') as g:
+        digits = list(map(int, g.readlines()))
+
+    sc, sc_ord, sc_one = random_regress(y_test, digits)
+    print(f"Scores are {sc}, {sc_ord}, {sc_one}")
+
+    file.write("\n")
+    file.write(str(sc) + "\n")
+    file.write(str(sc_ord) + "\n")
+    file.write(str(sc_one) + "\n")
+
     file.close()
