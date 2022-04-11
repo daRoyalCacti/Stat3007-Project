@@ -1,5 +1,3 @@
-# This is a sample Python script.
-
 from knn import *
 from naive_bayes import *
 from random_regress import *
@@ -11,6 +9,7 @@ from data_analysis import *
 if __name__ == '__main__':
     # get_unique_numbers_train()
     # run_random_regress()
-    run_nb()
-    run_knn()
+    # run_nb()
+    # run_knn()
     # run_logistic()
+    interpret_nb()

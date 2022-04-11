@@ -43,9 +43,9 @@ def compute_output(func, output_file):
     del X_extra_bw
     del y_extra_bw
 
-    func(X_tr_bw, y_tr_bw, X_test_bw, y_test_bw, "../results/nb.txt", "grayscale images, training : ")
+    func(X_tr_bw, y_tr_bw, X_test_bw, y_test_bw, output_file, "grayscale images, training : ")
     # training data is no longer needed
-    del X_tr
-    del y_tr
+    del X_tr_bw
+    del y_tr_bw
 
     func(X_big_bw, Y_big_bw, X_test_bw, y_test_bw, output_file, "grayscale images, training + extra :")
