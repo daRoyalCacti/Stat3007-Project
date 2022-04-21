@@ -12,14 +12,16 @@ def nb_regress(X_tr, y_tr, X_test, y_test):
 
     # finding the accuracy
     y_pred = classifier.predict(X_test)
-    return get_accuracy(y_pred, y_test), get_accuracy_order(y_pred, y_test), get_accuracy_one(y_pred, y_test)
+    return get_accuracy(y_pred, y_test), get_accuracy_order(y_pred, y_test), get_accuracy_one(y_pred,
+                                                                                              y_test), get_accuracy_untrainable(
+        y_pred, y_test)
 
 
 def run_nb_once(X_tr, y_tr, X_test, y_test, output_file, preamble):
-    sc, sc_ord, sc_one = nb_regress(X_tr, y_tr, X_test, y_test)
+    sc, sc_ord, sc_one, sc_unt = nb_regress(X_tr, y_tr, X_test, y_test)
     file = open(output_file, 'a')
     file.write("\n" + preamble + "\n")
-    file.write(str(sc) + " & " + str(sc_ord) + " & " + str(sc_one) + "\n")
+    file.write(str(sc) + " & " + str(sc_ord) + " & " + str(sc_one) + " & " + str(sc_unt) + "\\\\ \n")
     file.close()
 
 

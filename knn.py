@@ -10,15 +10,18 @@ def knn(n, X_tr, y_tr, X_test, y_test):
 
     # finding the accuracy
     y_pred = knn_classifier.predict(X_test)
-    return get_accuracy(y_pred, y_test), get_accuracy_order(y_pred, y_test), get_accuracy_one(y_pred, y_test)
+    return get_accuracy(y_pred, y_test), get_accuracy_order(y_pred, y_test), get_accuracy_one(y_pred,
+                                                                                              y_test), get_accuracy_untrainable(
+        y_pred, y_test)
 
 
 def run_knn_once(ns, X_tr, y_tr, X_test, y_test, output_file, preamble):
     file = open(output_file, 'a')
     file.write("\n" + preamble + "\n")
     for n in ns:
-        sc, sc_ord, sc_one = knn(int(n), X_tr, y_tr, X_test, y_test)
-        file.write(str(int(n)) + " & " + str(sc) + " & " + str(sc_ord) + " & " + str(sc_one) + "\n")
+        sc, sc_ord, sc_one, sc_unt = knn(int(n), X_tr, y_tr, X_test, y_test)
+        file.write(
+            str(int(n)) + " & " + str(sc) + " & " + str(sc_ord) + " & " + str(sc_one) + " & " + str(sc_unt) + "\\\\ \n")
         file.flush()
     file.close()
 

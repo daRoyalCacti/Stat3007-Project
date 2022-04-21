@@ -7,9 +7,9 @@ from data_analysis import *
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    # get_unique_numbers_train()
-    # run_random_regress()
+    # get_untrainable_digits()
+    run_random_regress()
     # run_nb()
     # run_knn()
     # run_logistic()
-    interpret_nb()
+    # interpret_nb()

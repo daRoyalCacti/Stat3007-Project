@@ -59,7 +59,7 @@ def get_unique_numbers():
         y2 = list(map(int, g.readlines()))
     with open("../dataset/extra_labels.txt", 'r') as g:
         y3 = list(map(int, g.readlines()))
-    y = y1 + y2 + y2
+    y = y1 + y2 + y3
     unique_y = np.unique(np.array(y))
 
     file = open("../results/unique_digits.txt", 'w')
@@ -75,5 +75,22 @@ def get_unique_numbers_train():
     unique_y = np.unique(np.array(y))
     file = open("../results/unique_digits_train.txt", 'w')
     for u in unique_y:
+        file.write(str(u) + "\n")
+    file.close()
+
+
+def get_untrainable_digits():
+    with open("../dataset/test_labels.txt", 'r') as g:
+        y1 = list(map(int, g.readlines()))
+    with open("../dataset/training_labels.txt", 'r') as g:
+        y2 = list(map(int, g.readlines()))
+
+    # Get elements that are in y1 but not in y2
+    # - digits that are in the testing set but not the training set
+    # https://stackoverflow.com/questions/41125909/python-find-elements-in-one-list-that-are-not-in-the-other
+    uniq = list(set(y1).difference(y2))
+
+    file = open("../results/untrainable_digits.txt", 'w')
+    for u in uniq:
         file.write(str(u) + "\n")
     file.close()
