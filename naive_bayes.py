@@ -5,24 +5,23 @@ import matplotlib.pyplot as plt
 from sklearn.datasets import load_digits
 
 
-def nb_regress(X_tr, y_tr, X_test, y_test):
+def nb_regress(X_tr, y_tr, X_test):
     # fitting the model
     classifier = MultinomialNB()
     classifier.fit(X_tr, y_tr)
 
     # finding the accuracy
     y_pred = classifier.predict(X_test)
-    return get_accuracy(y_pred, y_test), get_accuracy_order(y_pred, y_test), get_accuracy_one(y_pred,
-                                                                                              y_test), get_accuracy_untrainable(
-        y_pred, y_test)
+    return y_pred
 
 
-def run_nb_once(X_tr, y_tr, X_test, y_test, output_file, preamble):
-    sc, sc_ord, sc_one, sc_unt = nb_regress(X_tr, y_tr, X_test, y_test)
+def run_nb_once(X_tr, y_tr, X_test, y_test, extra_data, output_file, preamble):
     file = open(output_file, 'a')
     file.write("\n" + preamble + "\n")
-    file.write(str(sc) + " & " + str(sc_ord) + " & " + str(sc_one) + " & " + str(sc_unt) + "\\\\ \n")
     file.close()
+
+    y_pred = nb_regress(X_tr, y_tr, X_test)
+    log_scores(y_pred, y_test, extra_data, output_file)
 
 
 def run_nb():

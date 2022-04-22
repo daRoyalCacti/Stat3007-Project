@@ -3,37 +3,33 @@ from scores import *
 from compute_output import *
 
 
-def knn(n, X_tr, y_tr, X_test, y_test):
+def knn(n, X_tr, y_tr, X_test):
     # fitting the model
     knn_classifier = KNeighborsClassifier(n_neighbors=n)
     knn_classifier.fit(X_tr, y_tr)
 
     # finding the accuracy
     y_pred = knn_classifier.predict(X_test)
-    return get_accuracy(y_pred, y_test), get_accuracy_order(y_pred, y_test), get_accuracy_one(y_pred,
-                                                                                              y_test), get_accuracy_untrainable(
-        y_pred, y_test)
-
-
-def run_knn_once(ns, X_tr, y_tr, X_test, y_test, output_file, preamble):
-    file = open(output_file, 'a')
-    file.write("\n" + preamble + "\n")
-    for n in ns:
-        sc, sc_ord, sc_one, sc_unt = knn(int(n), X_tr, y_tr, X_test, y_test)
-        file.write(
-            str(int(n)) + " & " + str(sc) + " & " + str(sc_ord) + " & " + str(sc_one) + " & " + str(sc_unt) + "\\\\ \n")
-        file.flush()
-    file.close()
+    return y_pred
 
 
 # a helper function for passing run_knn_once into compute_output
-def helper_knn(X_tr, y_tr, X_test, y_test, output_file, preamble):
-    if X_tr.shape[0] < 50000:
-        return run_knn_once(np.logspace(np.log10(5), np.log10(10000), 10), X_tr, y_tr, X_test, y_test, output_file,
-                            preamble)
-    else:
-        return run_knn_once(np.logspace(np.log10(500), np.log10(60000), 10), X_tr, y_tr, X_test, y_test, output_file,
-                            preamble)
+def helper_knn(X_tr, y_tr, X_test, y_test, extra_data, output_file, preamble):
+    file = open(output_file, 'a')
+    file.write("\n" + preamble + "\n")
+    file.close()
+
+    # if X_tr.shape[0] < 50000:
+    #    ns = np.logspace(np.log10(5), np.log10(10000), 10)
+    # else:
+    #    ns = np.logspace(np.log10(500), np.log10(60000), 10)
+    ns = np.logspace(np.log10(int(len(y_tr / 300))), np.log10(int(len(y_tr / 3))), 10)
+    for n in ns:
+        y_pred = knn(int(n), X_tr, y_tr, X_test)
+        file = open(output_file, 'a')
+        file.write(str(int(n)) + " & ")
+        file.close()
+        log_scores(y_pred, y_test, extra_data, output_file)
 
 
 def run_knn():
