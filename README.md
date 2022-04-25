@@ -1,3 +1,3 @@
 # Stat3007-project
 
-testtt
+Major project for Stat3007
