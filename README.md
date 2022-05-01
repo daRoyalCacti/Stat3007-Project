@@ -43,7 +43,9 @@ def helper_function(X_tr, y_tr, X_test, y_test, extra_data, output_file):
     log_scores(y_pred, y_test, extra_data, output_file)
 ```
 
-where the log_scores function is general for every algorithm and has already been written.
+where the log_scores function is general for every algorithm and has already been written. It can be found in scores.py.
+It computes the: standard accuracy, how often the prediction is just a permutation of the true result, how often one
+digit was correctly identified, and how often a classifier that did not appear in the training set was classified.
 
 There are compute_output_ functions that are used to run these functions. These functions load the data, write some
 information to the output_file, and run the helper function A simple example of how to use the compute_output_ functions
