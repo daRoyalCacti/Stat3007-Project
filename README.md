@@ -8,8 +8,6 @@ Major project for Stat3007!
 project
 │
 └───Code
-│     -- file011.txt
-│     -- file012.txt
 └───Results
 │   
 └───Dataset
