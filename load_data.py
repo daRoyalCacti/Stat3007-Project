@@ -60,10 +60,25 @@ def read_test_data_linear_MNIST():
 
 
 def read_training_data_linear_MNIST():
-    X, y = read_data_linear("../dataset/training_images_MNIST/", "../dataset/training_labels_MNIST.txt")
-    return X, y, read_identifies("../dataset/training_no_digits.txt")
+    return read_data_linear("../dataset/training_images_MNIST/", "../dataset/training_labels_MNIST.txt")
 
 
 def read_extra_data_linear_MNIST():
-    X, y = read_data_linear("../dataset/extra_images_MNIST/", "../dataset/extra_labels_MNIST.txt")
-    return X, y, read_identifies("../dataset/extra_no_digits.txt")
+    return read_data_linear("../dataset/extra_images_MNIST/", "../dataset/extra_labels_MNIST.txt")
+
+
+def read_test_data_linear_MNIST_bw():
+    X, y = read_data_linear("../dataset/test_images_MNIST_grayscale/", "../dataset/test_labels_MNIST.txt")
+    return X, y, read_identifies("../dataset/test_no_digits.txt")
+
+
+def read_training_data_linear_MNIST_bw():
+    return read_data_linear("../dataset/training_images_MNIST_grayscale/", "../dataset/training_labels_MNIST.txt")
+
+
+def read_extra_data_linear_MNIST_bw():
+    return read_data_linear("../dataset/extra_images_MNIST_grayscale/", "../dataset/extra_labels_MNIST.txt")
+
+
+def read_MNIST_linear():
+    return read_data_linear("../dataset/MNIST/", "../dataset/MNIST_labels.txt")

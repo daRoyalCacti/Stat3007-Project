@@ -16,14 +16,10 @@ def logistic_regress(X_tr, y_tr, X_test):
     return y_pred
 
 
-def run_logistic_once(X_tr, y_tr, X_test, y_test, extra_data, output_file, preamble):
-    file = open(output_file, 'a')
-    file.write("\n" + preamble + "\n")
-    file.close()
-
+def run_logistic_once(X_tr, y_tr, X_test, y_test, extra_data, output_file):
     y_pred = logistic_regress(X_tr, y_tr, X_test)
     log_scores(y_pred, y_test, extra_data, output_file)
 
 
 def run_logistic():
-    compute_output(run_logistic_once, "../results/nb.txt")
+    compute_output_all_linear(run_logistic_once, "../results/logistic.txt")

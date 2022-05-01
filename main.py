@@ -1,3 +1,5 @@
+import sys
+
 from knn import *
 from naive_bayes import *
 from random_regress import *
@@ -13,3 +15,5 @@ if __name__ == '__main__':
     # run_knn()
     # run_logistic()
     # interpret_nb()
+    print("done")
+    sys.exit()
