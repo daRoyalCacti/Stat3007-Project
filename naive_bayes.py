@@ -15,17 +15,13 @@ def nb_regress(X_tr, y_tr, X_test):
     return y_pred
 
 
-def run_nb_once(X_tr, y_tr, X_test, y_test, extra_data, output_file, preamble):
-    file = open(output_file, 'a')
-    file.write("\n" + preamble + "\n")
-    file.close()
-
+def run_nb_once(X_tr, y_tr, X_test, y_test, extra_data, output_file):
     y_pred = nb_regress(X_tr, y_tr, X_test)
     log_scores(y_pred, y_test, extra_data, output_file)
 
 
 def run_nb():
-    compute_output(run_nb_once, "../results/nb.txt")
+    compute_output_all_linear(run_nb_once, "../results/nb.txt")
 
 
 def save_avgs(output_dir, inds, size, X_tr, y_tr):

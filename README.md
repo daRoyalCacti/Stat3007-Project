@@ -62,7 +62,7 @@ def run_algorithm():
 
 All the compute_output_ functions are found in compute_output.py. Functions with _train_ in them only use the training
 data as training data, whereas _extra_ functions use both the extra and training data as training data. Currently,
-only _linear functions have been written. These read each image in as a long vector.
+only _linear_ functions have been written. These read each image in as a long vector.
 
 
 

@@ -150,7 +150,7 @@ def compute_output_MNIST_linear(func, output_file):
     file = open(output_file, 'a')
     file.write("\nMNIST :\n")
     file.close()
-    func(X_tr_MNIST, y_test_MNIST, X_test_MNIST, y_test_MNIST, no_digits_test, output_file)
+    func(X_tr_MNIST, y_tr_MNIST, X_test_MNIST, y_test_MNIST, no_digits_test, output_file)
 
 
 def compute_output_all_linear(func, output_file):
