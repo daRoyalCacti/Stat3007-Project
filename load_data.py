@@ -20,7 +20,7 @@ def read_data_linear(img_loc, label):
     X[0, :] = first_image
 
     for i in range(1, len(y)):
-        file_name = img_loc + str(i).zfill(5) + ".png"
+        file_name = img_loc + str(i + 1).zfill(5) + ".png"
         img = image.imread(file_name)
         X[i, :] = np.reshape(img, (1, first_image.size))
 
