@@ -48,7 +48,7 @@ def helper_function(X_tr, y_tr, X_test, y_test, extra_data, output_file):
     log_scores(y_pred, y_test, extra_data, output_file)
 ```
 
-where the log_scores function is general for every algorithm and has already been written. It can be found in scores.py.
+where the log_scores function is general for every algorithm and has already been written. It can be found in `scores.py`.
 It computes the: standard accuracy, how often the prediction is just a permutation of the true result, how often one
 digit was correctly identified, and how often a classifier that did not appear in the training set was classified.
 
@@ -65,7 +65,7 @@ def run_algorithm():
     compute_output_grayscale_extra_linear(helper_function_, output_file)
 ```
 
-All the compute_output_ functions are found in compute_output.py. Functions with _train_ in them only use the training
+All the compute_output_ functions are found in `compute_output.py`. Functions with _train_ in them only use the training
 data as training data, whereas _extra_ functions use both the extra and training data as training data. Currently,
 only _linear_ functions have been written. These read each image in as a long vector.
 
