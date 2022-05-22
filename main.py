@@ -5,7 +5,7 @@ from naive_bayes import *
 from random_regress import *
 from logistic import *
 from autoencoder import *
-from rf import *
+from randomforest import *
 from MLP import *
 
 from data_analysis import *
