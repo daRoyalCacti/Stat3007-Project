@@ -1,5 +1,6 @@
 import numpy as np
 from matplotlib import image
+import torch
 
 
 def read_identifies(label):
@@ -82,3 +83,21 @@ def read_extra_data_linear_MNIST_bw():
 
 def read_MNIST_linear():
     return read_data_linear("../dataset/MNIST/", "../dataset/MNIST_labels.txt")
+
+
+def read_latent_vectors(file_loc):
+    # read in the data
+    with open(file_loc, 'r') as g:
+        str_lines = g.readlines()
+    y = torch.zeros((len(str_lines), 200))
+    for i in range(len(str_lines)):
+        arr_str = str_lines[i]
+        # get the indices of all the spaces
+        spaces = []
+        for pos, char in enumerate(arr_str):
+            if char == ' ':
+                spaces.append(pos)
+        y[i, 0] = float(arr_str[0:spaces[0]])
+        for j in range(len(spaces) - 1):
+            y[i, j + 1] = float(arr_str[spaces[j]:spaces[j + 1]])
+    return y

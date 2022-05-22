@@ -15,7 +15,8 @@ def knn(n, X_tr, y_tr, X_test):
 
 # a helper function for passing run_knn_once into compute_output
 def helper_knn(X_tr, y_tr, X_test, y_test, extra_data, output_file):
-    ns = np.logspace(np.log10(int(len(y_tr / 300))), np.log10(int(len(y_tr / 3))), 10)
+    # ns = np.logspace(np.log10(int(len(y_tr) / 3000)), np.log10(int(len(y_tr) / 300)), 4)
+    ns = [1, 10, 20, 50, 100]
     for n in ns:
         y_pred = knn(int(n), X_tr, y_tr, X_test)
         file = open(output_file, 'a')

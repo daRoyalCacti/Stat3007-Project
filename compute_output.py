@@ -1,6 +1,6 @@
 from load_data import *
 from scores import *
-
+from sklearn.preprocessing import MinMaxScaler
 
 def log_scores(y_pred, y_test, extra_data, output_file):
     sc = get_accuracy(y_pred, y_test, extra_data)
@@ -153,6 +153,25 @@ def compute_output_MNIST_linear(func, output_file):
     func(X_tr_MNIST, y_tr_MNIST, X_test_MNIST, y_test_MNIST, no_digits_test, output_file)
 
 
+def compute_output_AE_standard(func, output_file):
+    # loading the data
+    X_tr = read_latent_vectors("../results/ae_anal/standard/latent_vectors_train_epoch_19.txt")
+    X_ts = read_latent_vectors("../results/ae_anal/standard/latent_vectors_test_epoch_19.txt")
+    _, y_tr = read_training_data_linear()
+    _, y_tst = read_test_data_linear()
+    del _
+
+    # normalizing the inputs
+    scaler = MinMaxScaler()
+    X_tr = scaler.fit_transform(X_tr.numpy())
+    X_ts = scaler.fit_transform(X_ts.numpy())
+
+    file = open(output_file, 'a')
+    file.write("\nAE standard :\n")
+    file.close()
+    func(X_tr, y_tr, X_ts, y_tst, None, output_file)
+
+
 def compute_output_all_linear(func, output_file):
     compute_output_init(output_file)
     compute_output_coloured_train_linear(func, output_file)
@@ -164,3 +183,4 @@ def compute_output_all_linear(func, output_file):
     compute_output_grayscale_MNIST_train_linear(func, output_file)
     compute_output_grayscale_MNIST_extra_linear(func, output_file)
     compute_output_MNIST_linear(func, output_file)
+    compute_output_AE_standard(func, output_file)

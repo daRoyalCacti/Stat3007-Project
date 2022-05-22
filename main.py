@@ -14,16 +14,15 @@ from data_analysis import *
 if __name__ == '__main__':
     # get_untrainable_digits()
     # run_random_regress()
-    # run_nb()
-    # run_knn()
+    run_nb()
+    run_knn()
     # run_logistic()
     # run_rf()
     # run_MLP()
     # interpret_nb()
 
-    # test = autoencoder([2, 30, 15])
-    # test(torch.zeros((1,1,2)))
-    interpret_ae_standard()
+    # learn_ae_standard()
+    # classify_ae_standard()
 
     print("done")
     sys.exit()

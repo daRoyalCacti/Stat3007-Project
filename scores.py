@@ -82,6 +82,9 @@ def get_accuracy_untrainable(p_data, t_data, extra_data):
                 ttl += 1
                 if p_data[i] == t_data[i]:
                     sc += 1
-        return sc / ttl
+        if ttl == 0:
+            return 0
+        else:
+            return sc / ttl
     else:
         return -1
