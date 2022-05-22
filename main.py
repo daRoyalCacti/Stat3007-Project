@@ -5,6 +5,8 @@ from naive_bayes import *
 from random_regress import *
 from logistic import *
 from autoencoder import *
+from rf import *
+from MLP import *
 
 from data_analysis import *
 
@@ -15,6 +17,8 @@ if __name__ == '__main__':
     # run_nb()
     # run_knn()
     # run_logistic()
+    # run_rf()
+    # run_MLP()
     # interpret_nb()
 
     # test = autoencoder([2, 30, 15])
