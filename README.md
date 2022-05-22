@@ -19,7 +19,12 @@ project
     └───MNIST
     └───test_images
     └───test_images_grayscale
-    .
+    └───test_images_MNIST
+    └───test_images_MNIST_grayscale
+    └───training_images
+    └───training_images_grayscale
+    └───training_images_MNIST
+    └───training_images_MNIST_grayscale
     .
 ````
 
