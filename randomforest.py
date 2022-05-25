@@ -6,7 +6,7 @@ from load_data import *
 
 def rf(X_tr, y_tr, X_test):
     # fitting the model
-    rf_classifier = RandomForestClassifier(max_depth=3,random_state=42)
+    rf_classifier = RandomForestClassifier(max_depth=3, random_state=42)
     rf_classifier.fit(X_tr, y_tr)
 
     # finding the accuracy
@@ -21,4 +21,4 @@ def run_rf_once(X_tr, y_tr, X_test, y_test, extra_data, output_file):
 
 
 def run_rf():
-    compute_output_all_linear(helper_knn, "../results/rf.txt")
+    compute_output_all_linear(run_rf_once, "../results/rf.txt")

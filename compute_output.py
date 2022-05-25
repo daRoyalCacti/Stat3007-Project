@@ -192,7 +192,7 @@ def compute_output_AE_standard_l2(func, output_file):
 
 
 def compute_output_all_linear(func, output_file):
-    '''compute_output_init(output_file)
+    compute_output_init(output_file)
     compute_output_coloured_train_linear(func, output_file)
     compute_output_coloured_extra_linear(func, output_file)
     compute_output_grayscale_train_linear(func, output_file)
@@ -202,5 +202,5 @@ def compute_output_all_linear(func, output_file):
     compute_output_grayscale_MNIST_train_linear(func, output_file)
     compute_output_grayscale_MNIST_extra_linear(func, output_file)
     compute_output_MNIST_linear(func, output_file)
-    compute_output_AE_standard(func, output_file)'''
+    compute_output_AE_standard(func, output_file)
     compute_output_AE_standard_l2(func, output_file)

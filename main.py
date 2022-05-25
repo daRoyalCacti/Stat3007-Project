@@ -14,17 +14,17 @@ from data_analysis import *
 if __name__ == '__main__':
     # get_untrainable_digits()
     # run_random_regress()
-    run_nb()
-    run_knn()
+    # run_nb()
+    # run_knn()
     # run_logistic()
-    # run_rf()
+    run_rf()
     # run_MLP()
     # interpret_nb()
 
     # learn_ae_standard()
     # classify_ae_standard()
     # learn_ae_l2_standard()
-    run_MLP()
+    # run_MLP()
 
     print("done")
     sys.exit()
