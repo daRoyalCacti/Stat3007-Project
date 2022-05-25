@@ -23,6 +23,8 @@ if __name__ == '__main__':
 
     # learn_ae_standard()
     # classify_ae_standard()
+    # learn_ae_l2_standard()
+    run_MLP()
 
     print("done")
     sys.exit()

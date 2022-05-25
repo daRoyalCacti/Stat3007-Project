@@ -172,8 +172,27 @@ def compute_output_AE_standard(func, output_file):
     func(X_tr, y_tr, X_ts, y_tst, None, output_file)
 
 
+def compute_output_AE_standard_l2(func, output_file):
+    # loading the data
+    X_tr = read_latent_vectors("../results/ae_anal/standard_l2/latent_vectors_train_epoch_26.txt")
+    X_ts = read_latent_vectors("../results/ae_anal/standard_l2/latent_vectors_test_epoch_26.txt")
+    _, y_tr = read_training_data_linear()
+    _, y_tst = read_test_data_linear()
+    del _
+
+    # normalizing the inputs
+    scaler = MinMaxScaler()
+    X_tr = scaler.fit_transform(X_tr.numpy())
+    X_ts = scaler.fit_transform(X_ts.numpy())
+
+    file = open(output_file, 'a')
+    file.write("\nAE standard l2 :\n")
+    file.close()
+    func(X_tr, y_tr, X_ts, y_tst, None, output_file)
+
+
 def compute_output_all_linear(func, output_file):
-    compute_output_init(output_file)
+    '''compute_output_init(output_file)
     compute_output_coloured_train_linear(func, output_file)
     compute_output_coloured_extra_linear(func, output_file)
     compute_output_grayscale_train_linear(func, output_file)
@@ -183,4 +202,5 @@ def compute_output_all_linear(func, output_file):
     compute_output_grayscale_MNIST_train_linear(func, output_file)
     compute_output_grayscale_MNIST_extra_linear(func, output_file)
     compute_output_MNIST_linear(func, output_file)
-    compute_output_AE_standard(func, output_file)
+    compute_output_AE_standard(func, output_file)'''
+    compute_output_AE_standard_l2(func, output_file)

@@ -321,3 +321,114 @@ def classify_ae_standard():
             file.write("Epoch " + str(i + 1) + ", Batch " + str(counter) + " : ")
             file.close()
             log_scores(y_pred, y_tst, None, output_file)
+
+
+def learn_ae_l2(ae, X_tr, X_tst, device, criterion):
+    epochs = 100
+
+    # optimizer to learn the parameters of the network (I.e. the weights)
+    optimizer = torch.optim.Adam(ae.parameters(), lr=1e-4, weight_decay=0.00001)
+    # optimizer = torch.optim.Adam(ae.parameters(), lr=1000)
+
+    # for mini_batching
+    data_loader = DataLoader(DatasetWrapperAE(X_tr), batch_size=10, shuffle=True)
+
+    # training loop
+    for i in tqdm(range(epochs)):
+        for x_batch in data_loader:
+            optimizer.zero_grad()
+            gpu_x = x_batch.float().to(device)
+            # getting the results from the CNN when run on the training data
+            out = ae(gpu_x)  # net(x_train)
+            # getting the loss of this output (comparing to the labels of the training data)
+            loss = criterion(out, gpu_x)
+            # computing the gradients of the loss function
+            loss.backward()
+            # running the optimizer
+            optimizer.step()
+        # saving the latent vectors for all images after every epoch
+        file = open("../results/ae_anal/standard_l2/latent_vectors_train_epoch_" + str(i) + ".txt", 'w')
+        for k in range(X_tr.shape[0]):
+            input_v = torch.reshape(torch.from_numpy(X_tr[k]), (1, X_tr[k].shape[0])).float()
+            latent_v = ae.get_latent_vector(input_v).detach().cpu().numpy()
+            latent_v = latent_v[0]
+            for j in latent_v:
+                file.write(str(j) + " ")
+            file.write("\n")
+        file.close()
+        file = open("../results/ae_anal/standard_l2/latent_vectors_test_epoch_" + str(i) + ".txt", 'w')
+        for k in range(X_tst.shape[0]):
+            input_v = torch.reshape(torch.from_numpy(X_tst[k]), (1, X_tst[k].shape[0])).float()
+            latent_v = ae.get_latent_vector(input_v).detach().cpu().numpy()
+            latent_v = latent_v[0]
+            for j in latent_v:
+                file.write(str(j) + " ")
+            file.write("\n")
+        file.close()
+
+        draw_inds = [0, 1, 3, 5, 7, 8, 92]
+        for k in draw_inds:
+            # saving the compressed plot for some images
+            X_comp = ae(torch.reshape(torch.from_numpy(X_tr[k]), (1, X_tr[k].shape[0])).float())
+            X_comp = np.reshape(X_comp.detach().cpu().numpy(), (30, 60, 3))
+            file = open("../results/ae_anal/standard_l2/image" + str(k) + "_epoch" + str(i) + ".txt", 'w')
+            file.write(str(X_comp))
+            file.close()
+
+            plt.imshow(X_comp)
+            # hiding the axes
+            ax = plt.gca()
+            ax.get_xaxis().set_visible(False)
+            ax.get_yaxis().set_visible(False)
+
+            plt.savefig("../results/ae_anal/standard_l2/image" + str(k) + "_epoch" + str(i) + ".png",
+                        bbox_inches='tight',
+                        pad_inches=0)
+
+
+def learn_ae_l2_standard():
+    np.random.seed(0)
+    torch.manual_seed(0)
+
+    X_tr, y_tr = read_training_data_linear()
+    X_tst, y_tst = read_test_data_linear()
+    del y_tr
+    del y_tst
+
+    layers = np.linspace(200, X_tr.shape[1], 3)
+    layers = layers[::-1]
+
+    device = torch.device("cpu")
+    # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    ae = autoencoder(layers).float().to(device)
+
+    learn_ae_l2(ae, X_tr, X_tst, device, torch.nn.MSELoss())
+
+    # saving the images of some results
+    np.random.seed(0)
+    for i in range(300):
+        ind = np.random.randint(0, X_tr.shape[0])
+
+        # saving the uncompressed plot
+        X_plt = np.reshape(X_tr[ind], (30, 60, 3))
+        plt.imshow(X_plt)
+        # hiding the axes
+        ax = plt.gca()
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)
+
+        plt.savefig("../results/ae_anal/standard_l2/images/" + str(ind) + "_uncompressed.png", bbox_inches='tight',
+                    pad_inches=0)
+
+        # saving the compressed plot
+        X_comp = ae(torch.reshape(torch.from_numpy(X_tr[ind]), (1, X_tr[ind].shape[0])).float())
+        X_comp = np.reshape(X_comp.detach().cpu().numpy(), (30, 60, 3))
+        plt.imshow(X_comp)
+        # hiding the axes
+        ax = plt.gca()
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)
+
+        plt.savefig("../results/ae_anal/standard_l2/images/" + str(ind) + "_compressed.png", bbox_inches='tight',
+                    pad_inches=0)
