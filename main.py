@@ -7,6 +7,7 @@ from logistic import *
 from autoencoder import *
 from randomforest import *
 from MLP import *
+from cnn import *
 
 from data_analysis import *
 
@@ -17,7 +18,7 @@ if __name__ == '__main__':
     # run_nb()
     # run_knn()
     # run_logistic()
-    run_rf()
+    # run_rf()
     # run_MLP()
     # interpret_nb()
 
@@ -25,6 +26,8 @@ if __name__ == '__main__':
     # classify_ae_standard()
     # learn_ae_l2_standard()
     # run_MLP()
+
+    run_cnn_standard()
 
     print("done")
     sys.exit()
