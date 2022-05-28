@@ -7,6 +7,9 @@ from tqdm import tqdm
 from compute_output import *
 
 
+# https://discuss.pytorch.org/t/how-to-create-a-sparse-autoencoder-neural-network-with-pytorch/3703/6
+# https://github.com/LitoNeo/pytorch-AutoEncoders/blob/master/src/SparseAutoEncoder.py
+
 class autoencoder(torch.nn.Module):
     def __init__(self, layer_sizes):
         super().__init__()
@@ -432,3 +435,4 @@ def learn_ae_l2_standard():
 
         plt.savefig("../results/ae_anal/standard_l2/images/" + str(ind) + "_compressed.png", bbox_inches='tight',
                     pad_inches=0)
+
