@@ -97,16 +97,6 @@ class CNN(nn.Module):
         return output
 
 
-def testing():
-    X_tr, y_tr = read_test_data_image()
-    # X_tst, y_tst = read_test_data_image()
-
-    CNN_test = CNN(X_tr[0].shape, len(np.unique(y_tr)))
-
-    print(CNN_test.forward(
-        torch.reshape(torch.from_numpy(X_tr[0]), (1, X_tr[0].shape[2], X_tr[0].shape[1], X_tr[0].shape[0]))))
-
-
 # class for minibatching
 class DatasetWrapper(Dataset):
     def __init__(self, X, y):
@@ -218,9 +208,9 @@ def print_weights(cnn):
     file = open('../results/cnn_anal/standard/' + str(global_counter) + '_weights.txt', 'w')
 
     w1 = cnn.conv1[0].weight.data
-    w2 = cnn.conv2[0].weight.data
+    # w2 = cnn.conv2[0].weight.data
 
-    file.write("w1s\n===============================================\n")
+    # file.write("w1s\n===============================================\n")
     for i in range(w1.shape[0]):
         for j in range(w1.shape[1]):
             file.write("Matrix : (" + str(i) + "," + str(j) + ")\n")
@@ -228,14 +218,14 @@ def print_weights(cnn):
                 for h in range(w1.shape[3]):
                     file.write(str(w1[i, j, k, h].item()) + ", ")
                 file.write("\n")
-    file.write("w2s\n===============================================\n")
+    '''file.write("w2s\n===============================================\n")
     for i in range(w2.shape[0]):
         for j in range(w2.shape[1]):
             file.write("Matrix : (" + str(i) + "," + str(j) + ")\n")
             for k in range(w2.shape[2]):
                 for h in range(w2.shape[3]):
                     file.write(str(w2[i, j, k, h].item()) + ", ")
-                file.write("\n")
+                file.write("\n")'''
 
     file.close()
 
