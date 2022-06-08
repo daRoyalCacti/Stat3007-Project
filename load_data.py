@@ -129,6 +129,24 @@ def read_latent_vectors(file_loc):
     return y
 
 
+def read_latent_vectors2(file_loc):
+    # read in the data
+    with open(file_loc, 'r') as g:
+        str_lines = g.readlines()
+    y = torch.zeros((len(str_lines), 500))
+    for i in range(len(str_lines)):
+        arr_str = str_lines[i]
+        # get the indices of all the spaces
+        spaces = []
+        for pos, char in enumerate(arr_str):
+            if char == ' ':
+                spaces.append(pos)
+        y[i, 0] = float(arr_str[0:spaces[0]])
+        for j in range(len(spaces) - 1):
+            y[i, j + 1] = float(arr_str[spaces[j]:spaces[j + 1]])
+    return y
+
+
 def read_test_data_image():
     return read_data_image("../dataset/test_images/", "../dataset/test_labels.txt")
 

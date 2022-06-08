@@ -1,9 +1,9 @@
 yolo_loc = '/run/media/jacob/787bcf04-a47d-480e-a8f4-cf376ce72635/yolo_dataset/';
-% save_images('../../full_dataset/test/digitStruct.mat', '../../full_dataset/test/', [yolo_loc, 'test/'], [yolo_loc, 'test_labels.txt']);
-% save_images('../../full_dataset/train/digitStruct.mat', '../../full_dataset/train/', [yolo_loc, 'train/'], [yolo_loc, 'train_labels.txt']);
+save_images('../../full_dataset/test/digitStruct.mat', '../../full_dataset/test/', [yolo_loc, 'test/'], [yolo_loc, 'test_labels.txt']);
+save_images('../../full_dataset/train/digitStruct.mat', '../../full_dataset/train/', [yolo_loc, 'train/'], [yolo_loc, 'train_labels.txt']);
 
-make_csv('../../full_dataset/test/digitStruct.mat', '../../full_dataset/test/',  [yolo_loc, 'test_csv/']);
-make_csv('../../full_dataset/train/digitStruct.mat', '../../full_dataset/train/', [yolo_loc, 'train_csv/']);
+% make_csv('../../full_dataset/test/digitStruct.mat', '../../full_dataset/test/',  [yolo_loc, 'test_csv/']);
+% make_csv('../../full_dataset/train/digitStruct.mat', '../../full_dataset/train/', [yolo_loc, 'train_csv/']);
 
 % input_data = '../../full_dataset/test/digitStruct.mat';
 % input_image_dir = '../../full_dataset/test/';

@@ -17,6 +17,7 @@ class sparse_autoencoder(torch.nn.Module):
             self.decoder_layers.append(torch.nn.Linear(int(layer_sizes[-i - 1]), int(layer_sizes[-i - 2]), bias=True))
         self.activation = torch.nn.LeakyReLU()
         self.encoder_size = int(layer_sizes[-1])
+        self.no_activations = int(np.sum(layer_sizes) * 2)
 
     def forward(self, x):
         if x.get_device() >= 0:
@@ -40,11 +41,28 @@ class sparse_autoencoder(torch.nn.Module):
             output = torch.zeros((x.shape[0], self.encoder_layers[-1].out_features), device=x.get_device())
         else:
             output = torch.zeros((x.shape[0], self.encoder_layers[-1].out_features))
-        for j in range(output.shape[0]):
-            temp = x[j]
-            for i in range(len(self.encoder_layers)):
-                temp = self.activation(self.encoder_layers[i](temp))
-            output[j] = temp
+        with torch.no_grad():
+            for j in range(output.shape[0]):
+                temp = x[j]
+                for i in range(len(self.encoder_layers)):
+                    temp = self.activation(self.encoder_layers[i](temp))
+                output[j] = temp
+        return output
+
+    def get_activations(self, x):
+        if x.get_device() >= 0:
+            output = torch.zeros((x.shape[0], self.no_activations), device=x.get_device())
+        else:
+            output = torch.zeros((x.shape[0], self.no_activations))
+        with torch.no_grad():
+            for j in range(output.shape[0]):
+                temp = x[j]
+                cc = 0
+                for i in range(len(self.encoder_layers)):
+                    temp = self.activation(self.encoder_layers[i](temp))
+                    for k in range(len(temp)):
+                        output[j, cc] = temp[k]
+                        cc += 1
         return output
 
 
@@ -74,13 +92,13 @@ class DatasetWrapperAE(Dataset):
         return self.X[idx]
 
 
-def learn_ae_kl(ae, X_tr, X_tst, device, criterion):
+def learn_ae_kl2(ae, X_tr, X_tst, device, criterion):
     epochs = 100
     bs = 10
     expect_tho = 0.05
     beta = 10
 
-    tho_tensor = torch.FloatTensor([expect_tho for _ in range(int(ae.encoder_size))])
+    tho_tensor = torch.FloatTensor([expect_tho for _ in range(int(ae.no_activations))])
     # if torch.cuda.is_available():
     #    tho_tensor = tho_tensor.cuda()
 
@@ -98,10 +116,11 @@ def learn_ae_kl(ae, X_tr, X_tst, device, criterion):
             gpu_x = x_batch.float().to(device)
             # getting the results from the CNN when run on the training data
             latent, out = ae(gpu_x)  # net(x_train)
+            activations = ae.get_activations(gpu_x)  # net(x_train)
             # getting the loss of this output (comparing to the labels of the training data)
             loss = criterion(out, gpu_x)
             # adding the extra kl term to the loss
-            kl = KL_divergence(tho_tensor, latent, bs)
+            kl = KL_divergence(tho_tensor, activations, bs)
             loss += beta * kl
             # computing the gradients of the loss function
             loss.backward()
@@ -109,7 +128,7 @@ def learn_ae_kl(ae, X_tr, X_tst, device, criterion):
             optimizer.step()
 
         # saving the latent vectors for all images after every epoch
-        file = open("../results/ae_anal/standard_kl2/latent_vectors_train_epoch_" + str(i) + ".txt", 'w')
+        file = open("../results/ae_anal/standard_kl3/latent_vectors_train_epoch_" + str(i) + ".txt", 'w')
         for k in range(X_tr.shape[0]):
             input_v = torch.reshape(torch.from_numpy(X_tr[k]), (1, X_tr[k].shape[0])).float()
             latent_v = ae.get_latent_vector(input_v).detach().cpu().numpy()
@@ -118,7 +137,7 @@ def learn_ae_kl(ae, X_tr, X_tst, device, criterion):
                 file.write(str(j) + " ")
             file.write("\n")
         file.close()
-        file = open("../results/ae_anal/standard_kl2/latent_vectors_test_epoch_" + str(i) + ".txt", 'w')
+        file = open("../results/ae_anal/standard_kl3/latent_vectors_test_epoch_" + str(i) + ".txt", 'w')
         for k in range(X_tst.shape[0]):
             input_v = torch.reshape(torch.from_numpy(X_tst[k]), (1, X_tst[k].shape[0])).float()
             latent_v = ae.get_latent_vector(input_v).detach().cpu().numpy()
@@ -133,7 +152,7 @@ def learn_ae_kl(ae, X_tr, X_tst, device, criterion):
             # saving the compressed plot for some images
             _, X_comp = ae(torch.reshape(torch.from_numpy(X_tr[k]), (1, X_tr[k].shape[0])).float())
             X_comp = np.reshape(X_comp.detach().cpu().numpy(), (30, 60, 3))
-            file = open("../results/ae_anal/standard_kl2/image" + str(k) + "_epoch" + str(i) + ".txt", 'w')
+            file = open("../results/ae_anal/standard_kl3/image" + str(k) + "_epoch" + str(i) + ".txt", 'w')
             file.write(str(X_comp))
             file.close()
 
@@ -143,12 +162,12 @@ def learn_ae_kl(ae, X_tr, X_tst, device, criterion):
             ax.get_xaxis().set_visible(False)
             ax.get_yaxis().set_visible(False)
 
-            plt.savefig("../results/ae_anal/standard_kl2/image" + str(k) + "_epoch" + str(i) + ".png",
+            plt.savefig("../results/ae_anal/standard_kl3/image" + str(k) + "_epoch" + str(i) + ".png",
                         bbox_inches='tight',
                         pad_inches=0)
 
 
-def learn_ae_kl_standard():
+def learn_ae_kl_standard2():
     np.random.seed(0)
     torch.manual_seed(0)
 
@@ -165,7 +184,7 @@ def learn_ae_kl_standard():
 
     ae = sparse_autoencoder(layers).float().to(device)
 
-    learn_ae_kl(ae, X_tr, X_tst, device, torch.nn.MSELoss())
+    learn_ae_kl2(ae, X_tr, X_tst, device, torch.nn.MSELoss())
 
     # saving the images of some results
     np.random.seed(0)
@@ -180,7 +199,7 @@ def learn_ae_kl_standard():
         ax.get_xaxis().set_visible(False)
         ax.get_yaxis().set_visible(False)
 
-        plt.savefig("../results/ae_anal/standard_kl2/images/" + str(ind) + "_uncompressed.png", bbox_inches='tight',
+        plt.savefig("../results/ae_anal/standard_kl3/images/" + str(ind) + "_uncompressed.png", bbox_inches='tight',
                     pad_inches=0)
 
         # saving the compressed plot
@@ -192,5 +211,5 @@ def learn_ae_kl_standard():
         ax.get_xaxis().set_visible(False)
         ax.get_yaxis().set_visible(False)
 
-        plt.savefig("../results/ae_anal/standard_kl2/images/" + str(ind) + "_compressed.png", bbox_inches='tight',
+        plt.savefig("../results/ae_anal/standard_kl3/images/" + str(ind) + "_compressed.png", bbox_inches='tight',
                     pad_inches=0)
